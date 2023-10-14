@@ -4,7 +4,8 @@ import redis
 from flask import Flask, request
 
 app = Flask(__name__)
-
+REDIS_URL = "redis://red-cklgniou1l6c73bk7g60:6379"
+# REDIS_URL = 'redis://default:wFUMe5zGsP6X8NaECkSadQVs2zQCtrjL@redis-10285.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:10285'
 
 @app.route('/')
 def hello_world():
@@ -48,9 +49,7 @@ def get_currency_history(based, symbol, start_date, end_date):
 
 
 def get_cache(key):
-    r = redis.from_url(
-        'redis://default:wFUMe5zGsP6X8NaECkSadQVs2zQCtrjL@redis-10285.c292.ap-southeast-1-1.ec2.cloud.redislabs.com'
-        ':10285')
+    r = redis.from_url(REDIS_URL)
 
     try:
         cache = r.get(str(key)).decode('utf-8')
@@ -64,9 +63,7 @@ def get_cache(key):
 
 
 def set_cache(key, result):
-    r = redis.from_url(
-        'redis://default:wFUMe5zGsP6X8NaECkSadQVs2zQCtrjL@redis-10285.c292.ap-southeast-1-1.ec2.cloud.redislabs.com'
-        ':10285')
+    r = redis.from_url(REDIS_URL)
     r.set(str(key), str(result))
     return result
 
